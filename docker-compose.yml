@@ -31,6 +31,7 @@ services:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://symbi:symbipassword@mongodb:27017/symbi-synergy?authSource=admin
       - PORT=5000
+      - REDIS_URL=redis://redis:6379
     networks:
       - symbi-network
 
@@ -46,6 +47,16 @@ services:
     command: sh -c "npm install && npm start"
     environment:
       - NODE_ENV=development
+    networks:
+      - symbi-network
+
+  # Redis for background jobs
+  redis:
+    image: redis:7-alpine
+    container_name: symbi-redis
+    restart: always
+    ports:
+      - "6379:6379"
     networks:
       - symbi-network
 

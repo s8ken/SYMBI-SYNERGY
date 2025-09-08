@@ -22,6 +22,18 @@ const protect = asyncHandler(async (req, res, next) => {
       // Get user from token (exclude password)
       req.user = await User.findById(decoded.id).select('-password');
 
+      // Merge role claims from token if present (useful for RBAC tests and external IdPs)
+      if (decoded && typeof decoded === 'object') {
+        if (decoded.role && !req.user?.role) {
+          req.user = req.user || { id: decoded.id };
+          req.user.role = decoded.role;
+        }
+        if (decoded.roles && !req.user?.roles) {
+          req.user = req.user || { id: decoded.id };
+          req.user.roles = decoded.roles;
+        }
+      }
+
       if (!req.user) {
         return res.status(401).json({
           success: false,

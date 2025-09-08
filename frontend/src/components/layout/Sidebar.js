@@ -35,6 +35,7 @@ const Sidebar = ({ open, toggleDrawer }) => {
   const menuItems = [
      { text: 'Dashboard', icon: <DashboardIcon />, path: '/', useTheme: 'primary' },
      { text: 'Conversations', icon: <ChatIcon />, path: '/conversations', color: '#10b981' },
+     { text: 'Projects', icon: <SmartToyIcon />, path: '/projects', useTheme: 'secondary' },
      { text: 'Agents', icon: <SmartToyIcon />, path: '/agents', useTheme: 'primary' },
      { text: 'Assistants', icon: <SmartToyIcon />, path: '/assistants', useTheme: 'secondary' },
      { text: 'Symbi Logs', icon: <AssessmentIcon />, path: '/reports', color: '#f59e0b' },
@@ -88,7 +89,7 @@ const Sidebar = ({ open, toggleDrawer }) => {
               letterSpacing: '-0.01em'
             }}
           >
-            SYMBI SYNERGY
+            YCQ Sonate
           </Typography>
           <Typography 
             variant="body2" 

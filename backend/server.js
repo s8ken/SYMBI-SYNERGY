@@ -25,7 +25,10 @@ const allowedOrigins = [
     ...listFromEnv,
     ...single,
     'http://localhost:3000',
-    'http://localhost:3001'
+    'http://localhost:3001',
+    // Cloudflare Pages dev (wrangler) for "bolt on"
+    'http://localhost:8788',
+    'http://127.0.0.1:8788'
   ])
 ];
 
@@ -73,6 +76,33 @@ io.on('connection', (socket) => {
       socket.emit('joined', { conversationId });
     } catch (e) {
       socket.emit('error', { message: 'Failed to join conversation' });
+    }
+  });
+
+  // Join project room with membership check
+  socket.on('joinProject', async (projectId) => {
+    try {
+      const Project = require('./models/project.model');
+      const proj = await Project.findById(projectId).select('owner members');
+      if (!proj) return socket.emit('error', { message: 'Project not found' });
+      const userId = socket.user.id;
+      const allowed = proj.owner.toString() === userId || proj.members.some(m => (m.user?.toString?.() || m.toString()) === userId);
+      if (!allowed) return socket.emit('error', { message: 'Not authorized to join this project' });
+      socket.join(`project:${projectId}`);
+      socket.emit('joined', { projectId });
+    } catch (e) {
+      socket.emit('error', { message: 'Failed to join project' });
+    }
+  });
+
+  // Generic bolt message relay within project
+  socket.on('bolt:message', (data) => {
+    if (data?.projectId && data?.payload) {
+      io.to(`project:${data.projectId}`).emit('bolt:message', {
+        from: socket.user.id,
+        ts: new Date().toISOString(),
+        ...data
+      });
     }
   });
 

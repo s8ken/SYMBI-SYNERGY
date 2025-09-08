@@ -163,7 +163,12 @@ describe('Trust RBAC', () => {
       ];
 
       for (const endpoint of endpoints) {
-        const res = await request(app)[endpoint.method](endpoint.path);
+        let req = request(app)[endpoint.method](endpoint.path);
+        // Ensure content-type is acceptable so we reach auth middleware
+        if (['post', 'put', 'patch'].includes(endpoint.method)) {
+          req = req.set('Content-Type', 'application/json').send({});
+        }
+        const res = await req;
         expect(res.status).toBe(401);
         expect(res.body.success).toBe(false);
         expect(res.body.message).toContain('Not authorized');

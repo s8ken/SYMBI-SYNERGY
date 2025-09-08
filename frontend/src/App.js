@@ -25,6 +25,8 @@ import Documentation from './pages/Documentation';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
+import Projects from './pages/Projects';
+import ProjectDetail from './pages/ProjectDetail';
 
 const AppContent = () => {
   const { theme } = useTheme();
@@ -52,6 +54,8 @@ const AppContent = () => {
                       }
                     />
                     <Route path="/review" element={<ReviewConsole />} />
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/projects/:id" element={<ProjectDetail />} />
                     <Route path="/agents" element={<Agents />} />
                     <Route path="/agents/:id" element={<AgentDetail />} />
                     <Route path="/assistants" element={<Assistants />} />

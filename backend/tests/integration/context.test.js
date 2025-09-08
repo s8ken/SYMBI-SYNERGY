@@ -5,9 +5,11 @@ const Context = require('../../models/context.model');
 // Mock auth middleware
 jest.mock('../../middleware/auth.middleware', () => ({
   protect: jest.fn((req, res, next) => {
-    req.user = { id: 'testUserId' };
+    req.user = { id: 'testUserId', _id: '000000000000000000000001' };
     next();
-  })
+  }),
+  optionalAuth: jest.fn((req, res, next) => next()),
+  admin: jest.fn((req, res, next) => next()),
 }));
 
 describe('Context API Integration Tests', () => {

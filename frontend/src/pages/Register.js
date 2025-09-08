@@ -137,7 +137,7 @@ const Register = () => {
                    mb: 1
                  }}
                >
-                 SYMBI Synergy
+                 YCQ Sonate
                </Typography>
               <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
                 Join the future of AI collaboration

@@ -7,6 +7,9 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeContext } from '../../context/ThemeContext';
 
+// Check if we're in demo mode
+const isDemoMode = process.env.NODE_ENV === 'demo' || process.env.REACT_APP_DEMO_MODE === 'true';
+
 const Header = ({ toggleDrawer }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user, logout } = useAuth();
@@ -66,26 +69,55 @@ const Header = ({ toggleDrawer }) => {
           </IconButton>
         )}
         
-        <Typography 
-          variant="h6" 
-          component={Link} 
-          to="/" 
-          sx={{ 
-            flexGrow: 1, 
-            textDecoration: 'none', 
-            color: theme.palette.text.primary,
-            fontFamily: theme.typography.fontFamily,
-            fontWeight: 600,
-            fontSize: { xs: '1.2rem', sm: '1.4rem' },
-            letterSpacing: '-0.01em',
-            '&:hover': {
-              color: theme.palette.primary.main,
-            },
-            transition: 'color 0.2s ease'
-          }}
-        >
-          SYMBI SYNERGY
-        </Typography>
+        <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
+          <Typography 
+            variant="h6" 
+            component={Link} 
+            to="/" 
+            sx={{ 
+              textDecoration: 'none', 
+              color: theme.palette.text.primary,
+              fontFamily: theme.typography.fontFamily,
+              fontWeight: 600,
+              fontSize: { xs: '1.2rem', sm: '1.4rem' },
+              letterSpacing: '-0.01em',
+              '&:hover': {
+                color: theme.palette.primary.main,
+              },
+              transition: 'color 0.2s ease'
+            }}
+          >
+            YCQ Sonate
+          </Typography>
+          
+          {isDemoMode && (
+            <Box
+              sx={{
+                ml: 2,
+                px: 1,
+                py: 0.5,
+                backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                border: '1px solid rgba(255, 152, 0, 0.3)',
+                borderRadius: 1,
+                display: 'flex',
+                alignItems: 'center'
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  color: theme.palette.warning.main,
+                  fontWeight: 600,
+                  fontSize: '0.7rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}
+              >
+                🎭 Demo
+              </Typography>
+            </Box>
+          )}
+        </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {/* Theme toggle */}
@@ -125,6 +157,27 @@ const Header = ({ toggleDrawer }) => {
                 }}
               >
                 Conversations
+              </Button>
+              <Button 
+                component={Link} 
+                to="/projects"
+                sx={{ 
+                  display: isMobile ? 'none' : 'block',
+                  mx: 0.5,
+                  px: 2,
+                  py: 1,
+                  color: theme.palette.text.primary,
+                  fontWeight: 500,
+                  textTransform: 'none',
+                  borderRadius: 1,
+                  '&:hover': {
+                    backgroundColor: theme.palette.action.hover,
+                    color: theme.palette.success.main,
+                  },
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                Projects
               </Button>
               <Button 
                 component={Link} 

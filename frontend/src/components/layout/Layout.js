@@ -4,6 +4,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import DemoNotice from '../DemoNotice';
 import { useTheme } from '../../context/ThemeContext';
 
 const Layout = ({ children }) => {
@@ -23,7 +24,11 @@ const Layout = ({ children }) => {
             {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Header>
-        <Box component="main" sx={{ p: 3, mt: 8 }}>
+        <DemoNotice />
+        <Box component="main" sx={{ 
+          p: 3, 
+          mt: process.env.REACT_APP_DEMO_MODE === 'true' ? 12 : 8 // Extra margin for demo notice
+        }}>
           {children}
         </Box>
       </Box>

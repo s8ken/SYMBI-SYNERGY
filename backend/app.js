@@ -16,6 +16,13 @@ const {
   requestSizeLimiter
 } = require('./middleware/security.middleware');
 const { metricsMiddleware, mountMetrics } = require('./middleware/metrics.middleware');
+const { 
+  isDemoMode, 
+  demoRateLimit, 
+  demoRestrictions, 
+  demoDataSeed, 
+  demoAnalytics 
+} = require('./middleware/demo.middleware');
 
 // Load environment variables
 dotenv.config();
@@ -48,7 +55,10 @@ const corsOptions = {
         ...listFromEnv,
         ...single,
         'http://localhost:3000',
-        'http://localhost:3001'
+        'http://localhost:3001',
+        // Cloudflare Pages dev (wrangler) for "bolt on"
+        'http://localhost:8788',
+        'http://127.0.0.1:8788'
       ])
     ];
 
@@ -99,8 +109,17 @@ app.use(morgan('combined', {
 // Metrics collection (Prometheus)
 app.use(metricsMiddleware);
 
-// General API rate limiting
-app.use('/api/', apiRateLimit);
+// Demo mode middleware (applies to all routes)
+if (isDemoMode()) {
+  console.log('🎭 Running in DEMO MODE');
+  app.use(demoAnalytics);
+  app.use(demoDataSeed);
+  app.use(demoRestrictions);
+  app.use('/api/', demoRateLimit);
+} else {
+  // General API rate limiting (production)
+  app.use('/api/', apiRateLimit);
+}
 
 // Database connection - only connect if not in test mode
 if (process.env.NODE_ENV !== 'test') {
@@ -133,6 +152,7 @@ const eventRoutes = require('./routes/events.routes');
 const analysisRoutes = require('./routes/analysis.routes');
 const bridgeRoutes = require('./routes/bridge.routes');
 const capsuleRoutes = require('./routes/capsule.routes');
+const projectRoutes = require('./routes/project.routes');
 const guardrailsRoutes = require('./routes/guardrails.routes');
 const insightsRoutes = require('./routes/insights.routes');
 const ledgerRoutes = require('./routes/ledger.routes');
@@ -140,7 +160,7 @@ const sessionsRoutes = require('./routes/sessions.routes');
 
 // Root endpoint
 app.get('/', (req, res) => {
-  res.json({
+  const response = {
     success: true,
     message: 'SYMBI Trust Protocol API is running',
     version: '1.0.0',
@@ -156,7 +176,27 @@ app.get('/', (req, res) => {
       trust: '/api/trust'
     },
     documentation: 'Visit /api/trust for trust protocol endpoints'
-  });
+  };
+
+  // Add demo mode information
+  if (isDemoMode()) {
+    response.demo = true;
+    response.demoNotice = 'This is a demo environment with limited functionality';
+    response.demoLimits = {
+      maxUsers: process.env.DEMO_MAX_USERS || '100',
+      maxConversationsPerUser: process.env.DEMO_MAX_CONVERSATIONS_PER_USER || '3',
+      maxMessagesPerConversation: process.env.DEMO_MAX_MESSAGES_PER_CONVERSATION || '10',
+      rateLimit: `${process.env.DEMO_RATE_LIMIT || '50'} requests per ${process.env.DEMO_RATE_WINDOW || '900'} seconds`
+    };
+    response.demoFeatures = {
+      aiIntegration: 'Limited to demo responses',
+      trustProtocol: 'Full cryptographic verification enabled',
+      realTimeChat: 'Socket.IO enabled with demo limits',
+      analytics: 'Demo analytics tracking active'
+    };
+  }
+
+  res.json(response);
 });
 
 // API routes
@@ -179,6 +219,9 @@ app.use('/api/ledger', ledgerRoutes);
 app.use('/api/sessions', sessionsRoutes);
 app.use('/api/bridge', bridgeRoutes);
 app.use('/api/context/capsule', capsuleRoutes);
+// Mount projects API. Keep /api/bolt alias for backward compatibility temporarily.
+app.use('/api/projects', projectRoutes);
+app.use('/api/bolt', projectRoutes);
 
 // Expose /metrics (optionally bearer‑gated in production)
 mountMetrics(app);
