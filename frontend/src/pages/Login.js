@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Box, 
   Typography, 
-  TextField, 
   Button, 
   Paper, 
   Link as MuiLink,
@@ -15,6 +14,7 @@ import {
 } from '@mui/material';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import A11yTextField from '../components/forms/A11yTextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoginIcon from '@mui/icons-material/Login';
@@ -24,10 +24,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const Login = () => {
   const theme = useTheme();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const { login, isAuthenticated, loading, error } = useAuth();
 
@@ -40,6 +43,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Client-side validation
+    const nextErrors = {};
+    if (!formData.email) nextErrors.email = 'Email is required';
+    if (!formData.password) nextErrors.password = 'Password is required';
+    
+    setErrors(nextErrors);
+    
+    // If validation errors, don't submit
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
+    
     console.log('Form submitted with:', formData);
     try {
       const result = await login(formData.email, formData.password);
@@ -48,6 +64,15 @@ const Login = () => {
       console.error('Login error:', error);
     }
   };
+
+  // Focus first invalid field when errors change
+  useEffect(() => {
+    if (errors.email && emailRef.current) {
+      emailRef.current.focus();
+    } else if (errors.password && passwordRef.current) {
+      passwordRef.current.focus();
+    }
+  }, [errors]);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -107,7 +132,7 @@ const Login = () => {
               mb: 1
             }}
           >
-            SYMBI Synergy
+            YCQ Sonate
           </Typography>
           <Typography 
             variant="subtitle1" 
@@ -124,8 +149,8 @@ const Login = () => {
           </Alert>
         )}
 
-        <Box component="form" onSubmit={handleSubmit}>
-          <TextField
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <A11yTextField
             margin="normal"
             required
             fullWidth
@@ -136,6 +161,9 @@ const Login = () => {
             autoFocus
             value={formData.email}
             onChange={handleChange}
+            error={!!errors.email}
+            helperText={errors.email}
+            inputRef={emailRef}
             variant="outlined"
             InputProps={{
               startAdornment: (
@@ -157,7 +185,7 @@ const Login = () => {
               }
             }}
           />
-          <TextField
+          <A11yTextField
             margin="normal"
             required
             fullWidth
@@ -168,6 +196,9 @@ const Login = () => {
             autoComplete="current-password"
             value={formData.password}
             onChange={handleChange}
+            error={!!errors.password}
+            helperText={errors.password}
+            inputRef={passwordRef}
             variant="outlined"
             InputProps={{
               startAdornment: (
@@ -210,6 +241,7 @@ const Login = () => {
             type="submit"
             fullWidth
             variant="contained"
+            data-testid="login-submit"
             sx={{ 
               mt: 4, 
               mb: 3,

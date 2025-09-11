@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YCQ - Enterprise AI Implementation Done Right",
-  description: "Navigate AI adoption risks with confidence. SYMBI provides transparent, accountable AI solutions that protect your business while delivering results.",
+  title: "YCQ Sonate — Where audit meets orchestration",
+  description: "YCQ Sonate is trust-first AI orchestration—where audit meets orchestration. Hash-chained logs, fairness-aware KPIs, and policy guardrails across OpenAI/Anthropic. Prove integrity, then perform.",
 };
 
 export default function RootLayout({

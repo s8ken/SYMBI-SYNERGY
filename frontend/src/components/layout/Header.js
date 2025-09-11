@@ -38,7 +38,31 @@ const Header = ({ toggleDrawer }) => {
   };
 
   return (
-    <AppBar 
+    <>
+      {/* Skip link for accessibility */}
+      <a
+        href="#main"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          zIndex: 9999,
+          padding: '8px 16px',
+          background: '#000',
+          color: '#fff',
+          textDecoration: 'none',
+          borderRadius: '4px',
+        }}
+        onFocus={(e) => {
+          e.target.style.left = '8px';
+          e.target.style.top = '8px';
+        }}
+        onBlur={(e) => {
+          e.target.style.left = '-9999px';
+        }}
+      >
+        Skip to content
+      </a>
+      <AppBar 
       position="fixed" 
       sx={{
         background: theme.palette.background.paper,
@@ -308,7 +332,8 @@ const Header = ({ toggleDrawer }) => {
           )}
         </Box>
       </Toolbar>
-    </AppBar>
+      </AppBar>
+    </>
   );
 };
 

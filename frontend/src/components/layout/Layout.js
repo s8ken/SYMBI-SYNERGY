@@ -25,10 +25,20 @@ const Layout = ({ children }) => {
           </IconButton>
         </Header>
         <DemoNotice />
-        <Box component="main" sx={{ 
-          p: 3, 
-          mt: process.env.REACT_APP_DEMO_MODE === 'true' ? 12 : 8 // Extra margin for demo notice
-        }}>
+        <Box 
+          component="main" 
+          id="main"
+          role="main"
+          tabIndex={-1}
+          sx={{ 
+            p: 3, 
+            mt: process.env.REACT_APP_DEMO_MODE === 'true' ? 12 : 8, // Extra margin for demo notice
+            outline: 'none',
+            '&:focus': {
+              outline: 'none'
+            }
+          }}
+        >
           {children}
         </Box>
       </Box>

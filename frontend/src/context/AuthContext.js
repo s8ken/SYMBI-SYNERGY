@@ -31,8 +31,10 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const res = await axios.get('/api/auth/me');
-        setUser(res.data.data);
+        const res = await axios.get('/api/user/profile');
+        // Handle both demo format (direct) and production format (nested in data)
+        const userData = res.data.user || res.data.data;
+        setUser(userData);
         setLoading(false);
       } catch (err) {
         console.error('Error loading user:', err);
@@ -52,8 +54,11 @@ export const AuthProvider = ({ children }) => {
       const userData = { name, email, password };
       console.log('Sending registration request:', userData);
       const res = await axios.post('/api/auth/register', userData);
-      setToken(res.data.data.token);
-      setUser(res.data.data);
+      // Handle both demo format (direct) and production format (nested in data)
+      const token = res.data.token || res.data.data?.token;
+      const userInfo = res.data.user || res.data.data;
+      setToken(token);
+      setUser(userInfo);
       return res.data;
     } catch (err) {
       console.error('Registration error:', err);
@@ -69,8 +74,11 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const res = await axios.post('/api/auth/login', { email, password });
-      setToken(res.data.data.token);
-      setUser(res.data.data);
+      // Handle both demo format (direct) and production format (nested in data)
+      const token = res.data.token || res.data.data?.token;
+      const userData = res.data.user || res.data.data;
+      setToken(token);
+      setUser(userData);
       return res.data;
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');

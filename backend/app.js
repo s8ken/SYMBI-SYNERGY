@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const path = require('path');
+const os = require('os');
 const {
   securityHeaders,
   sanitizeInput,
@@ -197,6 +198,21 @@ app.get('/', (req, res) => {
   }
 
   res.json(response);
+});
+
+// API Health endpoint (matches Playwright test expectations)
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    ok: true,
+    status: 'ok',
+    service: 'ycq-sonate-api',
+    env: process.env.NODE_ENV || 'development',
+    uptime: process.uptime(),
+    pid: process.pid,
+    memory: process.memoryUsage().rss,
+    host: os.hostname(),
+    time: new Date().toISOString(),
+  });
 });
 
 // API routes

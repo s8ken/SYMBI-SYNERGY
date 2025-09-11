@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useRouteFocus } from '../hooks/useRouteFocus';
 import { 
   Box, 
   Typography, 
@@ -33,6 +34,7 @@ import axios from 'axios';
 import RoundtableDialog from '../components/bridge/RoundtableDialog';
 
 const Dashboard = () => {
+  const h1Ref = useRouteFocus();
   const { user } = useAuth();
   const [recentConversations, setRecentConversations] = useState([]);
   const [agents, setAgents] = useState([]);
@@ -114,12 +116,18 @@ const Dashboard = () => {
         }}
       >
           <Typography 
+            ref={h1Ref}
+            tabIndex={-1}
             variant="h3" 
             gutterBottom 
             sx={{ 
               fontWeight: 700,
               letterSpacing: '-0.02em',
-              color: (theme) => theme.palette.text.primary
+              color: (theme) => theme.palette.text.primary,
+              outline: 'none',
+              '&:focus': {
+                outline: 'none'
+              }
             }}
           >
             Welcome back, {user?.name || 'User'}!

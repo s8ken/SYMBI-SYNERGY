@@ -5,27 +5,35 @@ const hpp = require('hpp');
 const compression = require('compression');
 const { body, validationResult, param, query } = require('express-validator');
 
-// Security Headers Middleware
+// Security Headers Middleware  
+const DEMO = String(process.env.DEMO_MODE || process.env.NODE_ENV).toLowerCase() === 'demo' || String(process.env.NODE_ENV).toLowerCase() === 'development';
+
 const securityHeaders = helmet({
+  frameguard: { action: 'deny' },
+  xssFilter: true,
+  noSniff: true,
+  hidePoweredBy: true,
+  referrerPolicy: { policy: 'no-referrer' },
+  hsts: process.env.NODE_ENV === 'production'
+    ? { maxAge: 15552000, includeSubDomains: true, preload: false }
+    : false,
   contentSecurityPolicy: {
+    useDefaults: true,
     directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'", 'wss:', 'ws:'],
-      frameSrc: ["'none'"],
-      objectSrc: ["'none'"],
-      baseUri: ["'self'"]
-    }
+      "default-src": ["'self'"],
+      "base-uri": ["'self'"],
+      "img-src": ["'self'", "data:", "blob:"],
+      "font-src": ["'self'", "data:", "https://fonts.gstatic.com"],
+      "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // MUI inline styles
+      "script-src": ["'self'"],
+      "connect-src": ["'self'", "https:", "http:", "wss:", "ws:"], // API/WS calls
+      "frame-ancestors": ["'none'"],
+      "frame-src": ["'none'"],
+      "object-src": ["'none'"]
+    },
   },
-  crossOriginEmbedderPolicy: false, // Disable for Socket.IO compatibility
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  }
+  crossOriginEmbedderPolicy: false, // Socket.IO compatibility
+  crossOriginResourcePolicy: { policy: 'same-site' },
 });
 
 // Rate Limiting Configurations
