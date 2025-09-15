@@ -8,7 +8,9 @@ We take the security of the Symbi Trust Protocol seriously. If you discover a se
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to: **security@s8ken**
+Instead, please report them via email to: **security@yseeku.com**
+
+**Backup Contact**: stephen@yseeku.com (for critical issues)
 
 ### What to Include
 
@@ -181,8 +183,9 @@ We kindly ask that you:
 ### Security Contact
 
 For security-related inquiries:
-- **Email**: security@s8ken
+- **Email**: security@yseeku.com  
+- **Backup**: stephen@yseeku.com
 - **PGP Key**: Available on request
-- **Response Time**: 48 hours for acknowledgment
+- **Response Time**: 24 hours for critical issues, 48 hours for others
 
 Thank you for helping keep the Symbi Trust Protocol secure!

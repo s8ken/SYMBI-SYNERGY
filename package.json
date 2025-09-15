@@ -21,7 +21,8 @@
     "test:e2e:accessibility": "playwright test tests/e2e/accessibility.spec.js",
     "test:e2e:api": "playwright test tests/e2e/api-integration.spec.js",
     "test:e2e:website": "playwright test tests/e2e/website.spec.js --config=playwright.config.js",
-    "test:e2e:all": "playwright test --project=chromium"
+    "test:e2e:all": "playwright test --project=chromium",
+    "docs:api": "open docs/api-viewer.html || start docs/api-viewer.html || xdg-open docs/api-viewer.html"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.60.0",

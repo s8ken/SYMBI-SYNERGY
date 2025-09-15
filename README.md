@@ -4,8 +4,11 @@
 > If execution capability like this isn't worth investigating, what is?
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Available-brightgreen?style=for-the-badge)](https://symbi-synergy-pa9k82n5m-ycq.vercel.app)
-[![API Docs](https://img.shields.io/badge/📚_API_Docs-OpenAPI_3.0-blue?style=for-the-badge)](/docs)
+[![API Docs](https://img.shields.io/badge/📚_API_Docs-OpenAPI_3.0-blue?style=for-the-badge)](/openapi.yaml)
 [![Test Coverage](https://img.shields.io/badge/📊_Test_Coverage-95%25-green?style=for-the-badge)](#testing)
+[![Security Scan](https://img.shields.io/badge/🔒_Security-Gitleaks_+_CodeQL-red?style=for-the-badge)](SECURITY.md)
+[![License](https://img.shields.io/badge/📄_License-MIT-yellow?style=for-the-badge)](#license)
+[![Patent](https://img.shields.io/badge/🛡️_Patent-Filed_AU-purple?style=for-the-badge)](#investment-opportunity)
 
 ## 💡 The Problem: Enterprise AI is a Black Box
 
@@ -33,6 +36,8 @@ SYMBI transforms your AI from a liability risk into a competitive advantage with
 - **18-month competitive moat** from patent filing (Australia)
 
 ## 🏗️ Architecture Highlights
+
+> **🎯 [View Full Architecture Diagram →](docs/ARCHITECTURE.md)**
 
 ### Backend (Node.js/Express)
 - **Enterprise Security**: JWT/RBAC, rate limiting, input sanitization
@@ -72,6 +77,24 @@ npm run test:e2e
 ```
 
 **🌐 Live Demo**: [symbi-synergy-pa9k82n5m-ycq.vercel.app](https://symbi-synergy-pa9k82n5m-ycq.vercel.app)
+
+## 🎮 Demo Access
+
+**Test Credentials:**
+- **Email**: `demo@symbi-trust.com`
+- **Password**: `demo123`
+
+**Demo Scope:**
+- ✅ Full trust protocol demonstration with cryptographic receipts
+- ✅ Multi-provider AI comparison (OpenAI, Anthropic, Perplexity)
+- ✅ Real-time bias detection and compliance scoring
+- ✅ Interactive audit trail exploration
+- ⚠️ **Demo Limits**: 3 conversations, 10 messages per conversation, 50 requests/15min
+
+**Data Policy:**
+- All demo interactions are automatically purged every 24 hours
+- No real API keys or sensitive data stored
+- Session data encrypted and rate-limited for security
 
 ## 📂 Repository Structure
 
@@ -119,6 +142,8 @@ npm run test:e2e
 
 ## 💼 Investment Opportunity
 
+> **📋 [Complete Investment Deck →](docs/INVESTORS.md)**
+
 **Seeking $2M Seed Round**
 
 This platform demonstrates exceptional execution capability:
@@ -143,6 +168,15 @@ npm run test:e2e              # Full E2E suite
 npm run test:e2e:performance  # Performance tests
 npm run test:e2e:security     # Security tests
 npm run test:e2e:accessibility # A11y tests
+```
+
+### API Documentation
+```bash
+# View interactive API documentation
+npm run docs:api
+
+# Or browse to: docs/api-viewer.html
+# Live API explorer: https://symbi-synergy-pa9k82n5m-ycq.vercel.app/api/docs
 ```
 
 ### API Testing
