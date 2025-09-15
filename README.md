@@ -4,11 +4,12 @@
 > If execution capability like this isn't worth investigating, what is?
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Available-brightgreen?style=for-the-badge)](https://symbi-synergy-pa9k82n5m-ycq.vercel.app)
-[![API Docs](https://img.shields.io/badge/📚_API_Docs-OpenAPI_3.0-blue?style=for-the-badge)](/openapi.yaml)
+[![CI Status](https://github.com/s8ken/SYMBI-SYNERGY/actions/workflows/ci.yml/badge.svg?style=for-the-badge)](https://github.com/s8ken/SYMBI-SYNERGY/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/s8ken/SYMBI-SYNERGY/actions/workflows/security.yml/badge.svg?style=for-the-badge)](https://github.com/s8ken/SYMBI-SYNERGY/actions/workflows/security.yml)
 [![Test Coverage](https://img.shields.io/badge/📊_Test_Coverage-95%25-green?style=for-the-badge)](#testing)
-[![Security Scan](https://img.shields.io/badge/🔒_Security-Gitleaks_+_CodeQL-red?style=for-the-badge)](SECURITY.md)
-[![License](https://img.shields.io/badge/📄_License-MIT-yellow?style=for-the-badge)](#license)
-[![Patent](https://img.shields.io/badge/🛡️_Patent-Filed_AU-purple?style=for-the-badge)](#investment-opportunity)
+[![API Docs](https://img.shields.io/badge/📚_API_Docs-OpenAPI_3.0-blue?style=for-the-badge)](https://s8ken.github.io/SYMBI-SYNERGY/)
+[![License](https://img.shields.io/badge/📄_License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Patent](https://img.shields.io/badge/🛡️_Patent-Filed_AU-purple?style=for-the-badge)](docs/INVESTORS.md#investment-opportunity)
 
 ## 💡 The Problem: Enterprise AI is a Black Box
 
@@ -17,6 +18,8 @@
 - **Customers ask**: "Why should we trust this AI decision? How do we know it's not biased?"
 
 **Without SYMBI, you're flying blind with billions at risk.** EU AI Act fines start at €35M. One biased AI decision can destroy customer trust.
+
+> **⚖️ [EU AI Act Compliance Ready →](docs/EU_AI_ACT_COMPLIANCE.md)** - 95% compliant, full certification Q1 2025
 
 ## ⚡ The Solution: Cryptographic Proof for Every AI Decision
 
@@ -118,6 +121,8 @@ npm run test:e2e
 ```
 
 ## 🔥 Key Features
+
+> **🎯 [60-Second Golden Path Demo →](docs/GOLDEN_PATH.md)** - See the complete trust protocol flow
 
 ### 🔒 Trust Protocol Engine
 - **Cryptographic Receipts**: Every AI interaction generates immutable proof
