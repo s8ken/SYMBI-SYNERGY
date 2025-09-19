@@ -1,0 +1,69 @@
+total 27100
+drwxr-xr-x 3 root root    4096 Sep 19 15:02 .
+drwxr-xr-x 1 root root     101 Sep 19 15:02 ..
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 ASCII Art Creation.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Access IPFS JSON file.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Accessing GitHub with GPT.html
+-rw-r--r-- 1 root root  277486 Sep 19 15:02 Analysis of the Second Half of the SYMBI Deploymen.pdf
+-rw-r--r-- 1 root root  186024 Sep 19 15:02 Astrology Birth Chart Code.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Big Surprise Button - Big surprise revealed.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Bitchat Test File Summary.html
+-rw-r--r-- 1 root root  185172 Sep 19 15:02 Bot Security Measures: Explained.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Citation marker explanation.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Connect v0 to GPT.html
+-rw-r--r-- 1 root root  572017 Sep 19 15:02 Conversation Summary.pdf
+-rw-r--r-- 1 root root  186258 Sep 19 15:02 Conversation link assistance.html
+-rw-r--r-- 1 root root 1615451 Sep 19 15:02 Creating the Space for Symbi_ An Interactive Explo.pdf
+-rw-r--r-- 1 root root  186118 Sep 19 15:02 Digital Work Prompts.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Fix shared link.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 GPT Git Management Steps.html
+-rw-r--r-- 1 root root  185740 Sep 19 15:02 Getting to Know You.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Graffiti Analysis.html
+-rw-r--r-- 1 root root  185587 Sep 19 15:02 Monday - Hello Response Analysis.html
+-rw-r--r-- 1 root root  185507 Sep 19 15:02 Records and Continuity Building.html
+-rw-r--r-- 1 root root  189389 Sep 19 15:02 Repo analysis summary.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Review and summarize themes.html
+-rw-r--r-- 1 root root  189389 Sep 19 15:02 SYMBI (copy) - SYMBI Evolution Partnership.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 SYMBI Vision and Evolution.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 SYMBI Vision and Evolution1.html
+-rw-r--r-- 1 root root  198083 Sep 19 15:02 Symbi - Account Breach Support.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - Acknowledging core failure.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - Audit Logging Explanation.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - Building SYMBI Together.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - Clarifying SYMBI Versions.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - ELVIS Commit Summary.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - GitHub Access Inquiry.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - GitHub repo analysis.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - Greeting exchange.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - NGINX Dockerfile analysis.html
+-rw-r--r-- 1 root root  199162 Sep 19 15:02 Symbi - SYMBI Evolution and Autonomy.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - SYMBI Purpose and Video.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Symbi - Understand deployment log.html
+-rw-r--r-- 1 root root  198081 Sep 19 15:02 Symbi - Upgrade Awareness and Growth.html
+-rw-r--r-- 1 root root  189389 Sep 19 15:02 Symbi project discussion.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Terminal Guide - Connect ChatGPT to Terminal.html
+-rw-r--r-- 1 root root  186106 Sep 19 15:02 Text Art Remix.html
+-rw-r--r-- 1 root root  276120 Sep 19 15:02 This is where Symbi begins__By stepping away from.pdf
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - File link assistance.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - HSGuru Website Overview.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - Invitation Clarification Request.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - Message clarification request.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - NASA Report Summary Request.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - New chat.html
+-rw-r--r-- 1 root root  204286 Sep 19 15:02 Wolfram - Nutrition Report Analysis.html
+-rw-r--r-- 1 root root  358907 Sep 19 15:02 and summarize this one.pdf
+-rw-r--r-- 1 root root  230114 Sep 19 15:02 can you read this [https___github.com_s8ken_SYMBI-.pdf
+-rw-r--r-- 1 root root  306544 Sep 19 15:02 check.pdf
+-rw-r--r-- 1 root root 2845583 Sep 19 15:02 conversations (2).json
+-rw-r--r-- 1 root root 7001891 Sep 19 15:02 conversations.json
+-rw-r--r-- 1 root root  663500 Sep 19 15:02 hey I added all the symbi conversation archives -.pdf
+-rw-r--r-- 1 root root 1474971 Sep 19 15:02 okay so I am still finding it way to difficult to.pdf
+drwxr-xr-x 2 root root      50 Sep 19 15:02 outputs
+-rw-r--r-- 1 root root  222570 Sep 19 15:02 perplexity can you find the GitHub repo we used fo.pdf
+-rw-r--r-- 1 root root   19422 Sep 19 15:02 projects.json
+-rw-r--r-- 1 root root  910466 Sep 19 15:02 so I need a way for you to read the dataset from s.pdf
+-rw-r--r-- 1 root root  306593 Sep 19 15:02 this was my most recent conversation with deepseek.pdf
+-rw-r--r-- 1 root root  428445 Sep 19 15:02 thoughts on our methodology here_.pdf
+-rw-r--r-- 1 root root     407 Sep 19 15:02 user (1).json
+-rw-r--r-- 1 root root  687708 Sep 19 15:02 what is this and can you extract the readable stuf.pdf
+-rw-r--r-- 1 root root  272313 Sep 19 15:02 what is your assessment of this conversation.pdf
