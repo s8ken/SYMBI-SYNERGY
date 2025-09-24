@@ -1,7 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const TrustBond = require('../models/TrustBond');
 const Agent = require('../models/agent.model');
-const { trustOracle } = require('../core/trustOracle');
+const trustOracleModule = require('../core/trustOracle');
+const trustOracle = trustOracleModule.trustOracle || new trustOracleModule.TrustOracle();
 
 /**
  * @desc    Create a new trust bond between agents

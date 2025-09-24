@@ -22,10 +22,7 @@ async function sendMessage(req, res) {
     
     // Record trust evaluation if available
     if (trustContext) {
-      recordTrustEvaluation(
-        trustContext.recommendation || 'allow',
-        trustContext.violation || false
-      );
+      recordTrustEvaluation(trustContext);
     }
     
     // Simulate message processing
@@ -35,7 +32,8 @@ async function sendMessage(req, res) {
       agentId: agentId || 'default-agent',
       userId: userId || 'anonymous',
       timestamp: new Date().toISOString(),
-      trustScore: trustContext?.trustScore || 0.8,
+      trustScore: trustContext?.trustScore ?? null,
+      trustEvaluation: trustContext || null,
       processed: true
     };
     
