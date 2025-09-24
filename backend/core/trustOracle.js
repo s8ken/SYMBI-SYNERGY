@@ -66,6 +66,8 @@ class TrustOracle {
         riskLevel: 'low',
         timestamp: new Date(),
         context,
+        recommendation: 'allow', // Add recommendation field for metrics
+        violations: [], // Add violations array for metrics
         analysis: {
           riskFactors: [],
           recommendations: ['Continue monitoring', 'Maintain current trust level']
@@ -364,18 +366,18 @@ function createTrustMiddleware(options = {}) {
       }
 
       // Extract agent information from request
+      // For chat API: userId is source, agentId is target
       const sourceAgentId = 
+        req.body.userId ||
         req.user?.id || 
         req.user?._id?.toString?.() || 
-        req.body.agentId || 
         req.body.sourceAgentId ||
         'anonymous-user';
 
       const targetAgentId = 
+        req.body.agentId ||
         req.body.targetAgent || 
         req.body.recipientId || 
-        req.body.agentId || 
-        req.body.userId ||
         'default-target';
 
       if (!sourceAgentId || !targetAgentId) {
