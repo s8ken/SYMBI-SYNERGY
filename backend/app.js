@@ -19,6 +19,7 @@ const {
 const { metricsMiddleware, mountMetrics } = require('./middleware/metrics.middleware');
 const bondRoutes = require('./routes/trust-bonds.routes');
 const { createTrustMiddleware } = require('./core/trustOracle');
+const { register } = require('./instrumentation/trust-metrics');
 const { 
   isDemoMode, 
   demoRateLimit, 
@@ -167,6 +168,7 @@ const guardrailsRoutes = require('./routes/guardrails.routes');
 const insightsRoutes = require('./routes/insights.routes');
 const ledgerRoutes = require('./routes/ledger.routes');
 const sessionsRoutes = require('./routes/sessions.routes');
+const chatRoutes = require('./routes/chat.routes');
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -244,6 +246,7 @@ app.use('/api/ledger', ledgerRoutes);
 app.use('/api/sessions', sessionsRoutes);
 app.use('/api/bridge', bridgeRoutes);
 app.use('/api/context/capsule', capsuleRoutes);
+app.use('/api/chat', chatRoutes);
 // Mount projects API. Keep /api/bolt alias for backward compatibility temporarily.
 app.use('/api/projects', projectRoutes);
 app.use('/api/bolt', projectRoutes);

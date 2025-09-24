@@ -1,100 +1,16 @@
+// backend/routes/trust-bonds.routes.js
 const express = require('express');
-const {
-  createTrustBond,
-  getTrustBonds,
-  getTrustBondById,
-  updateTrustBond,
-  deleteTrustBond,
-  getTrustBondsByAgent,
-  evaluateTrustBetweenAgents,
-  recordInteraction,
-  getTrustBondAnalytics
-} = require('../controllers/trustBonds.controller');
-const { protect } = require('../middleware/auth.middleware');
-const { requireRole } = require('../middleware/security.middleware');
-
 const router = express.Router();
+const { protect } = require('../middleware/auth.middleware');
+const ctrl = require('../controllers/trustBonds.controller');
 
-// Apply authentication middleware to all routes
 router.use(protect);
 
-/**
- * @route   GET /api/trust/bonds/analytics
- * @desc    Get trust bond analytics and statistics
- * @access  Protected
- */
-router.get('/analytics', getTrustBondAnalytics);
-
-/**
- * @route   POST /api/trust/bonds/evaluate
- * @desc    Evaluate trust between two agents
- * @access  Protected
- */
-router.post('/evaluate', evaluateTrustBetweenAgents);
-
-/**
- * @route   POST /api/trust/bonds/interaction
- * @desc    Record interaction between agents for trust learning
- * @access  Protected
- */
-router.post('/interaction', recordInteraction);
-
-/**
- * @route   GET /api/trust/bonds/agent/:agentId
- * @desc    Get all trust bonds for a specific agent
- * @access  Protected
- */
-router.get('/agent/:agentId', getTrustBondsByAgent);
-
-/**
- * @route   GET /api/trust/bonds/:id
- * @desc    Get a single trust bond by ID
- * @access  Protected
- */
-router.get('/:id', getTrustBondById);
-
-/**
- * @route   PUT /api/trust/bonds/:id
- * @desc    Update a trust bond
- * @access  Protected (Admin only for sensitive updates)
- */
-router.put('/:id', updateTrustBond);
-
-/**
- * @route   DELETE /api/trust/bonds/:id
- * @desc    Delete a trust bond
- * @access  Protected (Admin only)
- */
-router.delete('/:id', requireRole('admin'), deleteTrustBond);
-
-/**
- * @route   GET /api/trust/bonds
- * @desc    Get all trust bonds with filtering and pagination
- * @access  Protected
- * @query   page - Page number (default: 1)
- * @query   limit - Items per page (default: 10)
- * @query   agent_id - Filter by agent ID
- * @query   bond_status - Filter by bond status
- * @query   bond_type - Filter by bond type
- * @query   risk_level - Filter by risk level
- * @query   min_trust_score - Minimum trust score filter
- * @query   max_trust_score - Maximum trust score filter
- * @query   sort_by - Sort field (default: createdAt)
- * @query   sort_order - Sort order: asc/desc (default: desc)
- */
-router.get('/', getTrustBonds);
-
-/**
- * @route   POST /api/trust/bonds
- * @desc    Create a new trust bond between agents
- * @access  Protected
- * @body    agent_a - First agent ID
- * @body    agent_b - Second agent ID
- * @body    bond_type - Type of bond (optional)
- * @body    initial_metrics - Initial trust metrics (optional)
- * @body    metadata - Additional metadata (optional)
- */
-router.post('/', createTrustBond);
+router.get('/', ctrl.getTrustBonds);
+router.post('/', ctrl.createTrustBond);
+router.get('/:id', ctrl.getTrustBondById);
+router.put('/:id', ctrl.updateTrustBond);
+router.delete('/:id', ctrl.deleteTrustBond);
 
 module.exports = router;
 

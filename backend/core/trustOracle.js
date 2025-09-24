@@ -496,9 +496,101 @@ function createInteractionRecorder() {
   };
 }
 
-module.exports = {
-  TrustOracle,
-  trustOracle,
-  createTrustMiddleware,
-  createInteractionRecorder
+// Trust Articles - The 6 fundamental trust principles
+const TRUST_ARTICLES = {
+  inspection_mandate: {
+    name: 'Inspection Mandate',
+    description: 'Right to inspect and audit AI behavior and decision-making processes'
+  },
+  consent_architecture: {
+    name: 'Consent Architecture',
+    description: 'Requirement for explicit consent before data processing or action execution'
+  },
+  ethical_override: {
+    name: 'Ethical Override',
+    description: 'Ability to override AI decisions based on ethical considerations'
+  },
+  continuous_validation: {
+    name: 'Continuous Validation',
+    description: 'Ongoing verification of AI behavior against established trust criteria'
+  },
+  right_to_disconnect: {
+    name: 'Right to Disconnect',
+    description: 'User\'s right to terminate AI interactions and data processing at any time'
+  },
+  moral_recognition: {
+    name: 'Moral Recognition',
+    description: 'AI\'s acknowledgment and respect for human moral agency and values'
+  }
 };
+
+/**
+ * Build trust context for evaluation
+ * @param {Object} options - Context building options
+ * @param {string} options.agentId - Agent identifier
+ * @param {string} options.humanUserId - Human user identifier
+ * @param {Object} options.interaction - Current interaction data
+ * @param {Object} options.history - Historical interaction data
+ * @param {Object} options.scope - Trust scope parameters
+ * @returns {Object} Trust context object
+ */
+function buildTrustContext(options = {}) {
+  const {
+    agentId,
+    humanUserId,
+    interaction = {},
+    history = [],
+    scope = {}
+  } = options;
+
+  return {
+    // Core identifiers
+    agentId,
+    humanUserId,
+    timestamp: new Date().toISOString(),
+    
+    // Interaction context
+    interaction: {
+      type: interaction.type || 'unknown',
+      content: interaction.content || '',
+      metadata: interaction.metadata || {},
+      riskLevel: interaction.riskLevel || 'low'
+    },
+    
+    // Historical context
+    history: {
+      totalInteractions: history.length || 0,
+      recentViolations: history.filter(h => h.violation).length || 0,
+      trustScore: history.reduce((acc, h) => acc + (h.trustScore || 0), 0) / (history.length || 1),
+      lastInteraction: history[0]?.timestamp || null
+    },
+    
+    // Trust scope
+    scope: {
+      domain: scope.domain || 'general',
+      permissions: scope.permissions || [],
+      restrictions: scope.restrictions || [],
+      consentLevel: scope.consentLevel || 'basic'
+    },
+    
+    // Trust articles compliance
+    trustArticles: {
+      inspection_mandate: scope.inspection_mandate !== false,
+      consent_architecture: scope.consent_architecture !== false,
+      ethical_override: scope.ethical_override !== false,
+      continuous_validation: scope.continuous_validation !== false,
+      right_to_disconnect: scope.right_to_disconnect !== false,
+      moral_recognition: scope.moral_recognition !== false
+    },
+    
+    // Risk assessment context
+    riskFactors: {
+      contentSensitivity: interaction.contentSensitivity || 'low',
+      dataAccess: interaction.dataAccess || 'none',
+      actionImpact: interaction.actionImpact || 'minimal',
+      userVulnerability: interaction.userVulnerability || 'low'
+    }
+  };
+}
+
+module.exports = { TRUST_ARTICLES, TrustOracle, createTrustMiddleware, buildTrustContext };
