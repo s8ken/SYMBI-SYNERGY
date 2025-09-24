@@ -17,6 +17,8 @@ const {
   requestSizeLimiter
 } = require('./middleware/security.middleware');
 const { metricsMiddleware, mountMetrics } = require('./middleware/metrics.middleware');
+const bondRoutes = require('./routes/trust-bonds.routes');
+const { createTrustMiddleware } = require('./core/trustOracle');
 const { 
   isDemoMode, 
   demoRateLimit, 
@@ -120,6 +122,13 @@ if (isDemoMode()) {
 } else {
   // General API rate limiting (production)
   app.use('/api/', apiRateLimit);
+
+// Trust Bonds + Oracle
+app.use('/api/trust/bonds', bondRoutes);
+
+// App-level Trust Oracle guards for common send paths
+app.use('/api/chat/send', createTrustMiddleware());
+app.use('/api/conversations/send', createTrustMiddleware());
 }
 
 // Database connection - only connect if not in test mode
