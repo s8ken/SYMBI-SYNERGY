@@ -212,3 +212,13 @@ secrets/
 *.secret
 config/secrets.js
 config/production.js
+# Local dev artifacts
+.local/
+.replit
+replit.md
+frontend/src/components/analytics/
+frontend/src/hooks/useAnalytics.js
+frontend/src/lib/analytics.js
+# Builds
+frontend/build/
+# OS
