@@ -3,6 +3,9 @@ const client = require('prom-client');
 const register = new client.Registry();
 client.collectDefaultMetrics({ register });
 
+// Import trust metrics register
+const { register: trustRegister } = require('../instrumentation/trust-metrics');
+
 const httpReqs = new client.Counter({
   name: 'http_requests_total',
   help: 'Total HTTP requests',
@@ -45,7 +48,12 @@ function mountMetrics(app) {
         if (auth !== token) return res.status(401).json({ error: 'unauthorized' });
       }
       res.set('Content-Type', register.contentType);
-      res.end(await register.metrics());
+      
+      // Combine main metrics with trust metrics
+      const mainMetrics = await register.metrics();
+      const trustMetrics = await trustRegister.metrics();
+      
+      res.end(mainMetrics + trustMetrics);
     } catch (e) {
       res.status(500).json({ error: 'metrics_unavailable', message: e.message });
     }
