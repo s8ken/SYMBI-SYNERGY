@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YCQ Sonate Trust Receipt Verifier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .loading { color: #3b82f6; }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body class="bg-stone-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="gradient-bg text-white py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold mb-4">Trust Receipt Verifier</h1>
+                    <p class="text-lg opacity-90">Verify cryptographic audit trails from YCQ Sonate implementations</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <!-- Verification Panel -->
+                <section class="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
+                    <h2 class="text-xl font-bold text-stone-900 mb-6">Verify Trust Receipt</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-stone-700 mb-2">
+                                Receipt Event ID
+                            </label>
+                            <input 
+                                type="text" 
+                                id="eventId" 
+                                placeholder="e.g., rcpt_2024_1208_15h23m_a7f8b2"
+                                class="w-full border border-stone-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                        </div>
+                        
+                        <button 
+                            onclick="verifyReceipt()"
+                            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                        >
+                            Verify Receipt
+                        </button>
+                        
+                        <div id="verificationResult" class="hidden">
+                            <!-- Results will appear here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sample Receipts -->
+                <section class="bg-white rounded-xl shadow-sm border border-stone-200 p-6">
+                    <h2 class="text-xl font-bold text-stone-900 mb-6">Sample Receipts</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-stone-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-stone-900 mb-2">Healthcare Diagnostic</h3>
+                            <p class="text-sm text-stone-600 mb-3">AI-powered radiology diagnosis with HIPAA compliance</p>
+                            <button 
+                                onclick="verifySample('healthcare')"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            >
+                                Verify This Receipt →
+                            </button>
+                        </div>
+                        
+                        <div class="border border-stone-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-stone-900 mb-2">Credit Decision</h3>
+                            <p class="text-sm text-stone-600 mb-3">AI credit scoring with fair lending compliance</p>
+                            <button 
+                                onclick="verifySample('financial')"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            >
+                                Verify This Receipt →
+                            </button>
+                        </div>
+                        
+                        <div class="border border-stone-200 rounded-lg p-4">
+                            <h3 class="font-semibold text-stone-900 mb-2">Content Moderation</h3>
+                            <p class="text-sm text-stone-600 mb-3">AI content moderation with audit trails</p>
+                            <button 
+                                onclick="verifySample('moderation')"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            >
+                                Verify This Receipt →
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Live Demo Section -->
+            <section class="mt-12 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-8 border border-blue-200">
+                <h2 class="text-2xl font-bold text-stone-900 mb-6 text-center">Live Trust Ledger Demo</h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <h3 class="font-semibold text-stone-900 mb-3">API Health Check</h3>
+                        <button 
+                            onclick="checkHealth()"
+                            class="w-full bg-blue-600 text-white px-3 py-2 rounded text-sm font-medium hover:bg-blue-700 transition-colors"
+                        >
+                            Check API Status
+                        </button>
+                        <div id="healthResult" class="mt-3 text-sm"></div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-green-200">
+                        <h3 class="font-semibold text-stone-900 mb-3">Trust Analytics</h3>
+                        <button 
+                            onclick="viewAnalytics()"
+                            class="w-full bg-green-600 text-white px-3 py-2 rounded text-sm font-medium hover:bg-green-700 transition-colors"
+                        >
+                            View Analytics
+                        </button>
+                        <div id="analyticsResult" class="mt-3 text-sm"></div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-purple-200">
+                        <h3 class="font-semibold text-stone-900 mb-3">Create Trust Declaration</h3>
+                        <button 
+                            onclick="createDeclaration()"
+                            class="w-full bg-purple-600 text-white px-3 py-2 rounded text-sm font-medium hover:bg-purple-700 transition-colors"
+                        >
+                            Generate Sample
+                        </button>
+                        <div id="declarationResult" class="mt-3 text-sm"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Examples -->
+            <section class="mt-12 bg-white rounded-xl shadow-sm border border-stone-200 p-8">
+                <h2 class="text-2xl font-bold text-stone-900 mb-6">Integration Examples</h2>
+                
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="font-semibold text-stone-900 mb-3">Python SDK Example</h3>
+                        <div class="code-block">
+<pre><code class="language-python">import requests
+
+# Verify a trust receipt
+def verify_trust_receipt(event_id):
+    response = requests.get(f"https://demo.ycq-sonate.com/api/trust/verify/{event_id}")
+    return response.json()
+
+# Create a trust declaration
+def create_trust_declaration(agent_data):
+    response = requests.post(
+        "https://demo.ycq-sonate.com/api/trust",
+        json=agent_data
+    )
+    return response.json()
+
+# Usage
+result = verify_trust_receipt("rcpt_2024_1208_15h23m_a7f8b2")
+print(f"Verification: {result['data']['isValid']}")</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-stone-900 mb-3">cURL Examples</h3>
+                        <div class="code-block">
+<pre><code class="language-bash"># Check API health
+curl https://symbi-synergy-pa9k82n5m-ycq.vercel.app/api/health
+
+# Create trust declaration
+curl -X POST https://symbi-synergy-pa9k82n5m-ycq.vercel.app/api/trust \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agentId": "healthcare-ai-001",
+    "agentName": "Claude-3.5-Sonnet",
+    "trustArticles": {
+      "inspection_mandate": true,
+      "consent_architecture": true,
+      "ethical_override": true
+    }
+  }'
+
+# Verify receipt
+curl https://symbi-synergy-pa9k82n5m-ycq.vercel.app/api/trust/verify/rcpt_2024_1208_15h23m_a7f8b2</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-stone-900 text-stone-300 py-8 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-sm">YCQ Sonate Trust Receipt Verifier • Cryptographic Audit Trails • Enterprise Compliance</p>
+                <div class="mt-4 space-x-4">
+                    <a href="/" class="text-stone-400 hover:text-white text-sm">Home</a>
+                    <a href="/case-studies" class="text-stone-400 hover:text-white text-sm">Case Studies</a>
+                    <a href="/security" class="text-stone-400 hover:text-white text-sm">Security</a>
+                    <a href="https://symbi-synergy-pa9k82n5m-ycq.vercel.app" target="_blank" class="text-stone-400 hover:text-white text-sm">Live Demo</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const DEMO_URL = "https://symbi-synergy-pa9k82n5m-ycq.vercel.app";
+        
+        // Sample receipt IDs for demonstration
+        const SAMPLE_RECEIPTS = {
+            healthcare: "diag_2024_1208_14h23m_b4e9c1",
+            financial: "credit_2024_1208_15h41m_f8a3d2",
+            moderation: "mod_2024_1208_16h15m_c7d5e3"
+        };
+
+        async function verifyReceipt() {
+            const eventId = document.getElementById('eventId').value;
+            if (!eventId) {
+                showResult('error', 'Please enter an Event ID');
+                return;
+            }
+
+            showResult('loading', 'Verifying receipt...');
+            
+            try {
+                const response = await fetch(`${DEMO_URL}/api/trust/verify/${eventId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    showVerificationDetails(data.data);
+                } else {
+                    showResult('error', `Verification failed: ${data.error}`);
+                }
+            } catch (error) {
+                showResult('error', `Network error: ${error.message}`);
+            }
+        }
+
+        function verifySample(type) {
+            const eventId = SAMPLE_RECEIPTS[type];
+            document.getElementById('eventId').value = eventId;
+            verifyReceipt();
+        }
+
+        async function checkHealth() {
+            document.getElementById('healthResult').innerHTML = '<span class="loading">Checking...</span>';
+            
+            try {
+                const response = await fetch(`${DEMO_URL}/api/health`);
+                const data = await response.json();
+                
+                document.getElementById('healthResult').innerHTML = `
+                    <div class="success">✅ Healthy</div>
+                    <div class="text-xs text-stone-500 mt-1">
+                        Receipts: ${data.receipts || 'N/A'} | 
+                        Declarations: ${data.declarations || 'N/A'}
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('healthResult').innerHTML = `
+                    <div class="error">❌ Connection failed</div>
+                `;
+            }
+        }
+
+        async function viewAnalytics() {
+            document.getElementById('analyticsResult').innerHTML = '<span class="loading">Loading...</span>';
+            
+            try {
+                const response = await fetch(`${DEMO_URL}/api/trust/analytics`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const avgCompliance = (data.data.score_statistics.avg_compliance * 100).toFixed(1);
+                    document.getElementById('analyticsResult').innerHTML = `
+                        <div class="success">✅ Analytics loaded</div>
+                        <div class="text-xs text-stone-500 mt-1">
+                            Avg Compliance: ${avgCompliance}% | 
+                            Declarations: ${data.data.overview.total_declarations}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('analyticsResult').innerHTML = `
+                    <div class="error">❌ Failed to load</div>
+                `;
+            }
+        }
+
+        async function createDeclaration() {
+            document.getElementById('declarationResult').innerHTML = '<span class="loading">Creating...</span>';
+            
+            try {
+                const response = await fetch(`${DEMO_URL}/api/trust`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        agentId: "demo-ai-" + Date.now(),
+                        agentName: "Demo AI Assistant",
+                        trustArticles: {
+                            inspection_mandate: true,
+                            consent_architecture: true,
+                            ethical_override: true,
+                            continuous_validation: true,
+                            right_to_disconnect: true,
+                            moral_recognition: true
+                        },
+                        notes: "Demo declaration from verifier tool"
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('declarationResult').innerHTML = `
+                        <div class="success">✅ Created</div>
+                        <div class="text-xs text-stone-500 mt-1">
+                            ID: ${data.data.id.substring(0, 15)}... | 
+                            Score: ${(data.data.complianceScore * 100).toFixed(0)}%
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('declarationResult').innerHTML = `
+                    <div class="error">❌ Failed to create</div>
+                `;
+            }
+        }
+
+        function showResult(type, message) {
+            const resultDiv = document.getElementById('verificationResult');
+            resultDiv.classList.remove('hidden');
+            
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : 'loading';
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳';
+            
+            resultDiv.innerHTML = `
+                <div class="${className}">
+                    ${icon} ${message}
+                </div>
+            `;
+        }
+
+        function showVerificationDetails(data) {
+            const resultDiv = document.getElementById('verificationResult');
+            resultDiv.classList.remove('hidden');
+            
+            const verification = data.verificationDetails;
+            
+            resultDiv.innerHTML = `
+                <div class="space-y-4">
+                    <div class="success text-lg font-semibold">
+                        ✅ Receipt Verified Successfully
+                    </div>
+                    
+                    <div class="bg-stone-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-stone-900 mb-2">Verification Details</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-stone-600">Content Integrity:</span>
+                                <span class="font-medium ${verification.contentIntegrity === 'VERIFIED' ? 'text-green-600' : 'text-red-600'} ml-2">
+                                    ${verification.contentIntegrity}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-stone-600">Signature Valid:</span>
+                                <span class="font-medium ${verification.signatureValid ? 'text-green-600' : 'text-red-600'} ml-2">
+                                    ${verification.signatureValid ? 'VALID' : 'INVALID'}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-stone-600">Chain Integrity:</span>
+                                <span class="font-medium text-green-600 ml-2">
+                                    ${verification.chainIntegrity}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-stone-600">Trust Score:</span>
+                                <span class="font-medium text-blue-600 ml-2">
+                                    ${(verification.trustScore * 100).toFixed(0)}%
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-stone-200">
+                            <div class="text-sm">
+                                <span class="text-stone-600">Created:</span>
+                                <span class="font-medium ml-2">
+                                    ${new Date(verification.auditTrail.created).toLocaleString()}
+                                </span>
+                            </div>
+                            <div class="text-sm mt-1">
+                                <span class="text-stone-600">Verified:</span>
+                                <span class="font-medium ml-2">
+                                    ${new Date(verification.auditTrail.verified).toLocaleString()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize with health check
+        window.addEventListener('load', () => {
+            checkHealth();
+        });
+    </script>
+</body>
+</html>
