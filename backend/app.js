@@ -169,6 +169,8 @@ const insightsRoutes = require('./routes/insights.routes');
 const ledgerRoutes = require('./routes/ledger.routes');
 const sessionsRoutes = require('./routes/sessions.routes');
 const chatRoutes = require('./routes/chat.routes');
+const receiptVerifierRoutes = require('./routes/receiptVerifier.routes');
+const demoReceiptRoutes = require('./routes/demoReceipt.routes');
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -185,9 +187,11 @@ app.get('/', (req, res) => {
       reports: '/api/reports',
       context: '/api/context',
       webhooks: '/api/webhooks',
-      trust: '/api/trust'
+      trust: '/api/trust',
+      receipts: '/api/receipts',
+      demoReceipts: '/api/demo-receipts'
     },
-    documentation: 'Visit /api/trust for trust protocol endpoints'
+    documentation: 'Visit /api/trust for trust protocol endpoints, /api/receipts for receipt verification, or /api/demo-receipts for demo generation'
   };
 
   // Add demo mode information
@@ -247,6 +251,8 @@ app.use('/api/sessions', sessionsRoutes);
 app.use('/api/bridge', bridgeRoutes);
 app.use('/api/context/capsule', capsuleRoutes);
 app.use('/api/chat', chatRoutes);
+  app.use('/api/receipts', receiptVerifierRoutes);
+  app.use('/api/demo-receipts', demoReceiptRoutes);
 // Mount projects API. Keep /api/bolt alias for backward compatibility temporarily.
 app.use('/api/projects', projectRoutes);
 app.use('/api/bolt', projectRoutes);
