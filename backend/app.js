@@ -28,6 +28,9 @@ const {
   demoAnalytics 
 } = require('./middleware/demo.middleware');
 
+// Trust Oracle Integration
+const { logTrustEvaluation } = require('./middleware/trustPolicy');
+
 // Load environment variables
 dotenv.config();
 
@@ -113,6 +116,9 @@ app.use(morgan('combined', {
 // Metrics collection (Prometheus)
 app.use(metricsMiddleware);
 
+// Trust metrics logging (for monitoring)
+app.use(logTrustEvaluation);
+
 // Demo mode middleware (applies to all routes)
 if (isDemoMode()) {
   console.log('🎭 Running in DEMO MODE');
@@ -143,7 +149,12 @@ if (process.env.NODE_ENV !== 'test') {
     maxIdleTimeMS: 30000,
     family: 4
   })
-    .then(() => console.log('MongoDB connected successfully'))
+    .then(() => {
+      console.log('MongoDB connected successfully');
+      // Initialize Trust Oracle models
+      require('./models/trustBond.model');
+      console.log('Trust Oracle models initialized');
+    })
     .catch(err => console.error('MongoDB connection error:', err));
 }
 
