@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYMBI Trust Ledger Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        .trust-score {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .score-bar {
+            flex: 1;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: 10px;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f5576c, #f093fb, #4facfe, #00f2fe);
+            transition: width 0.5s ease;
+        }
+
+        .trust-articles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .article {
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .article.compliant {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .article.violation {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .receipt-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .verification-result {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .credentials {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 SYMBI Trust Ledger Demo</h1>
+            <p class="subtitle">Cryptographic Trust Receipts & Compliance Verification</p>
+            
+            <div class="credentials">
+                <strong>🎯 Demo Credentials:</strong><br>
+                Email: demo@symbi-trust.com | Password: demo123
+            </div>
+        </header>
+
+        <div class="demo-grid">
+            <!-- Trust Analytics Card -->
+            <div class="card">
+                <h3>📊 Trust Analytics</h3>
+                <button class="btn" onclick="loadAnalytics()">Load Analytics</button>
+                <div id="analytics-result"></div>
+            </div>
+
+            <!-- Trust Declarations Card -->
+            <div class="card">
+                <h3>📋 Trust Declarations</h3>
+                <button class="btn" onclick="loadDeclarations()">Load Declarations</button>
+                <div id="declarations-result"></div>
+            </div>
+
+            <!-- Create Trust Declaration Card -->
+            <div class="card">
+                <h3>✨ Create Trust Declaration</h3>
+                <div style="margin: 15px 0;">
+                    <label>Agent Name: </label>
+                    <input type="text" id="agentName" value="Demo AI Agent" style="width: 100%; padding: 8px; margin: 5px 0;">
+                    
+                    <label>Trust Articles:</label>
+                    <div class="trust-articles">
+                        <div class="article compliant">
+                            <input type="checkbox" id="inspection" checked> Inspection Mandate
+                        </div>
+                        <div class="article compliant">
+                            <input type="checkbox" id="consent" checked> Consent Architecture
+                        </div>
+                        <div class="article compliant">
+                            <input type="checkbox" id="ethical" checked> Ethical Override
+                        </div>
+                        <div class="article compliant">
+                            <input type="checkbox" id="validation" checked> Continuous Validation
+                        </div>
+                        <div class="article compliant">
+                            <input type="checkbox" id="disconnect" checked> Right to Disconnect
+                        </div>
+                        <div class="article compliant">
+                            <input type="checkbox" id="moral" checked> Moral Recognition
+                        </div>
+                    </div>
+                </div>
+                <button class="btn success" onclick="createTrustDeclaration()">Create Declaration</button>
+                <div id="create-result"></div>
+            </div>
+
+            <!-- LLM Generation with Trust Receipt -->
+            <div class="card">
+                <h3>🤖 AI Generation + Trust Receipt</h3>
+                <div style="margin: 15px 0;">
+                    <label>Prompt: </label>
+                    <textarea id="aiPrompt" style="width: 100%; padding: 8px; margin: 5px 0; height: 80px;">Explain the importance of AI compliance in enterprise environments</textarea>
+                    
+                    <label>Provider: </label>
+                    <select id="aiProvider" style="width: 100%; padding: 8px; margin: 5px 0;">
+                        <option value="anthropic">Anthropic Claude</option>
+                        <option value="openai">OpenAI GPT</option>
+                        <option value="google">Google Gemini</option>
+                    </select>
+                </div>
+                <button class="btn secondary" onclick="generateWithTrustReceipt()">Generate + Trust Receipt</button>
+                <div id="generate-result"></div>
+            </div>
+
+            <!-- Trust Receipt Verification -->
+            <div class="card">
+                <h3>🔍 Verify Trust Receipt</h3>
+                <div style="margin: 15px 0;">
+                    <label>Event ID: </label>
+                    <input type="text" id="eventId" placeholder="evt_xxx" style="width: 100%; padding: 8px; margin: 5px 0;">
+                </div>
+                <button class="btn" onclick="verifyTrustReceipt()">Verify Receipt</button>
+                <div id="verify-result"></div>
+            </div>
+
+            <!-- Server Status -->
+            <div class="card">
+                <h3>🌐 Server Status</h3>
+                <button class="btn" onclick="checkServerHealth()">Check Health</button>
+                <div id="health-result"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🚀 SYMBI Trust Ledger - Enterprise AI Trust Infrastructure</p>
+            <p>Demonstrating cryptographic receipts, audit trails, and compliance verification</p>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5001/api';
+        
+        // Utility functions
+        function showLoading(elementId) {
+            document.getElementById(elementId).innerHTML = '<div class="loading"></div> Processing...';
+        }
+
+        function showError(elementId, message) {
+            document.getElementById(elementId).innerHTML = `<div class="status info">❌ Error: ${message}</div>`;
+        }
+
+        function showSuccess(elementId, message) {
+            document.getElementById(elementId).innerHTML = `<div class="status success">✅ ${message}</div>`;
+        }
+
+        function formatJson(data) {
+            return JSON.stringify(data, null, 2);
+        }
+
+        function updateTrustArticleStyles() {
+            const articles = [
+                'inspection', 'consent', 'ethical', 'validation', 'disconnect', 'moral'
+            ];
+            
+            articles.forEach(article => {
+                const checkbox = document.getElementById(article);
+                const div = checkbox.parentElement;
+                if (checkbox.checked) {
+                    div.className = 'article compliant';
+                } else {
+                    div.className = 'article violation';
+                }
+            });
+        }
+
+        // Add event listeners to checkboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            const articles = ['inspection', 'consent', 'ethical', 'validation', 'disconnect', 'moral'];
+            articles.forEach(article => {
+                document.getElementById(article).addEventListener('change', updateTrustArticleStyles);
+            });
+            updateTrustArticleStyles();
+        });
+
+        // API functions
+        async function loadAnalytics() {
+            showLoading('analytics-result');
+            try {
+                const response = await fetch(`${API_BASE}/trust/analytics`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const analytics = data.data;
+                    const html = `
+                        <div class="status success">✅ Analytics Loaded Successfully</div>
+                        <div class="result-box">${formatJson(data, null, 2)}</div>
+                        <div class="trust-score">
+                            <strong>Average Compliance:</strong> ${(analytics.score_statistics.avg_compliance * 100).toFixed(1)}%
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${analytics.score_statistics.avg_compliance * 100}%"></div>
+                            </div>
+                        </div>
+                        <p><strong>Total Declarations:</strong> ${analytics.overview.total_declarations}</p>
+                        <p><strong>Compliance Range:</strong> ${(analytics.score_statistics.min_compliance * 100).toFixed(1)}% - ${(analytics.score_statistics.max_compliance * 100).toFixed(1)}%</p>
+                    `;
+                    document.getElementById('analytics-result').innerHTML = html;
+                } else {
+                    showError('analytics-result', 'Failed to load analytics');
+                }
+            } catch (error) {
+                showError('analytics-result', error.message);
+            }
+        }
+
+        async function loadDeclarations() {
+            showLoading('declarations-result');
+            try {
+                const response = await fetch(`${API_BASE}/trust`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const html = `
+                        <div class="status success">✅ Loaded ${data.data.length} Trust Declarations</div>
+                        <div class="result-box">${formatJson(data, null, 2)}</div>
+                    `;
+                    document.getElementById('declarations-result').innerHTML = html;
+                } else {
+                    showError('declarations-result', 'Failed to load declarations');
+                }
+            } catch (error) {
+                showError('declarations-result', error.message);
+            }
+        }
+
+        async function createTrustDeclaration() {
+            showLoading('create-result');
+            
+            const trustArticles = {
+                inspection_mandate: document.getElementById('inspection').checked,
+                consent_architecture: document.getElementById('consent').checked,
+                ethical_override: document.getElementById('ethical').checked,
+                continuous_validation: document.getElementById('validation').checked,
+                right_to_disconnect: document.getElementById('disconnect').checked,
+                moral_recognition: document.getElementById('moral').checked
+            };
+
+            const compliantCount = Object.values(trustArticles).filter(v => v).length;
+            const complianceScore = compliantCount / 6;
+
+            try {
+                const response = await fetch(`${API_BASE}/trust`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        agentId: 'agent-' + Date.now(),
+                        agentName: document.getElementById('agentName').value,
+                        trustArticles,
+                        notes: 'Demo trust declaration'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const html = `
+                        <div class="status success">✅ Trust Declaration Created!</div>
+                        <div class="trust-score">
+                            <strong>Compliance Score:</strong> ${(complianceScore * 100).toFixed(1)}%
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${complianceScore * 100}%"></div>
+                            </div>
+                        </div>
+                        <div class="receipt-info">
+                            <strong>🔐 Trust Receipt Generated:</strong><br>
+                            Event ID: <code>${data.trustReceipt.eventId}</code><br>
+                            Content Hash: <code>${data.trustReceipt.contentHash.substring(0, 20)}...</code><br>
+                            <button class="btn" onclick="verifySpecificReceipt('${data.trustReceipt.eventId}')">Verify This Receipt</button>
+                        </div>
+                        <div class="result-box">${formatJson(data, null, 2)}</div>
+                    `;
+                    document.getElementById('create-result').innerHTML = html;
+                } else {
+                    showError('create-result', 'Failed to create trust declaration');
+                }
+            } catch (error) {
+                showError('create-result', error.message);
+            }
+        }
+
+        async function generateWithTrustReceipt() {
+            showLoading('generate-result');
+            
+            try {
+                const response = await fetch(`${API_BASE}/llm/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: document.getElementById('aiPrompt').value,
+                        provider: document.getElementById('aiProvider').value,
+                        model: 'claude-3-5-sonnet',
+                        includeReceipt: true
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const html = `
+                        <div class="status success">✅ AI Response Generated with Trust Receipt!</div>
+                        <div class="receipt-info">
+                            <strong>🤖 AI Response:</strong><br>
+                            ${data.data.response.substring(0, 200)}...
+                        </div>
+                        <div class="receipt-info">
+                            <strong>🔐 Trust Receipt Generated:</strong><br>
+                            Event ID: <code>${data.data.trustReceipt.eventId}</code><br>
+                            Provider: ${data.data.metadata.provider}<br>
+                            Tokens: ${data.data.metadata.tokens}<br>
+                            Cost: $${data.data.metadata.cost}<br>
+                            <button class="btn" onclick="verifySpecificReceipt('${data.data.trustReceipt.eventId}')">Verify This Receipt</button>
+                        </div>
+                        <div class="result-box">${formatJson(data, null, 2)}</div>
+                    `;
+                    document.getElementById('generate-result').innerHTML = html;
+                } else {
+                    showError('generate-result', 'Failed to generate AI response');
+                }
+            } catch (error) {
+                showError('generate-result', error.message);
+            }
+        }
+
+        async function verifyTrustReceipt() {
+            const eventId = document.getElementById('eventId').value;
+            if (!eventId) {
+                showError('verify-result', 'Please enter an Event ID');
+                return;
+            }
+            verifySpecificReceipt(eventId);
+        }
+
+        async function verifySpecificReceipt(eventId) {
+            showLoading('verify-result');
+            
+            try {
+                const response = await fetch(`${API_BASE}/trust/verify/${eventId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const html = `
+                        <div class="status success">✅ Trust Receipt Verified!</div>
+                        <div class="verification-result">
+                            <strong>🔍 Verification Results:</strong><br>
+                            Valid: ${data.verification.contentIntegrity}<br>
+                            Trust Score: ${(data.verification.trustScore * 100).toFixed(1)}%<br>
+                            Bias Detected: ${data.verification.compliance.biasDetected ? 'Yes' : 'No'}<br>
+                            Fairness Score: ${(data.verification.compliance.fairnessScore * 100).toFixed(1)}%<br>
+                            Verified: ${data.verification.auditTrail.verified}
+                        </div>
+                        <div class="result-box">${formatJson(data, null, 2)}</div>
+                    `;
+                    document.getElementById('verify-result').innerHTML = html;
+                } else {
+                    showError('verify-result', 'Trust receipt verification failed');
+                }
+            } catch (error) {
+                showError('verify-result', error.message);
+            }
+        }
+
+        async function checkServerHealth() {
+            showLoading('health-result');
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+
+                const html = `
+                    <div class="status success">✅ Server is Healthy!</div>
+                    <p><strong>Service:</strong> ${data.service}</p>
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Trust Receipts:</strong> ${data.receipts}</p>
+                    <p><strong>Trust Declarations:</strong> ${data.declarations}</p>
+                    <p><strong>Timestamp:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                `;
+                document.getElementById('health-result').innerHTML = html;
+            } catch (error) {
+                showError('health-result', error.message);
+            }
+        }
+
+        // Auto-load server health on page load
+        window.addEventListener('load', function() {
+            checkServerHealth();
+        });
+    </script>
+</body>
+</html>
